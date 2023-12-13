@@ -1,14 +1,10 @@
 import { FilterDescr } from './Filter.styled';
 
-export const Filter = ({ contacts, filter, handleFilterChange }) => {
+export const Filter = ({ handleFilterChange }) => {
   const handleFilterSubmit = e => {
-    const filterValue = e.target.value.toLowerCase().trim();
+    const filterValue = e.target.value.trim();
 
-    const filteredContacts = contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filterValue)
-    );
-
-    handleFilterChange(filteredContacts);
+    handleFilterChange(filterValue);
   };
 
   return (

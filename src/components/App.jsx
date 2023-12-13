@@ -17,6 +17,16 @@ export class App extends Component {
   };
 
   addContact = newContact => {
+    const { contacts } = this.state;
+    const isContactExists = contacts.some(
+      contact => contact.name.toLowerCase() === newContact.name.toLowerCase()
+    );
+
+    if (isContactExists) {
+      alert(`${newContact.name} is already in contacts.`);
+      return;
+    }
+
     this.setState(prevState => ({
       contacts: [...prevState.contacts, newContact],
     }));
@@ -28,12 +38,15 @@ export class App extends Component {
     });
   };
 
-  handleFilterChange = filteredContacts => {
-    this.setState({ filter: filteredContacts, contacts: filteredContacts });
+  handleFilterChange = filterValue => {
+    this.setState({ filter: filterValue.toLowerCase() });
   };
 
   render() {
-    const { contacts, name, number } = this.state;
+    const { contacts, name, number, filter } = this.state;
+    const filteredContacts = contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter)
+    );
     return (
       <>
         <h1>Phonebook</h1>
@@ -48,7 +61,10 @@ export class App extends Component {
           contacts={contacts}
           handleFilterChange={this.handleFilterChange}
         />
-        <ContactList contacts={contacts} deleteContact={this.deleteContact} />
+        <ContactList
+          contacts={filteredContacts}
+          deleteContact={this.deleteContact}
+        />
       </>
     );
   }
